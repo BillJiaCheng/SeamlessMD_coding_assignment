@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Bill Answer</title>
+</head>
+<body>
+
+ <p>Name of patient: <span id="pName"></span></p >
+  <p>Organization name: <span id="oName"></span></p >
+  <p>Gender: <span id="gender"></span></p >
+  <p>Number of conditions they have: <span id="numConditions"></span></p >
+  <p>List of all conditions:</p >
+  <ul id="conditions"></ul>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(document).ready(function(e) {    
+    $.getJSON( "./patient.json" , function( result ){
+        var name = result.name[0].family[0] + ' ' + result.name[0].given[0];
+        $('#pName').text(name);
+
+        var oName = result.managingOrganization.reference + ' ' + result.managingOrganization.display;
+        $('#oName').text(oName);
+
+        $('#gender').text(result.gender);
+
+        var conditions = result.conditions;
+        var cLength = conditions.length;
+        $('#numConditions').text(cLength);
+        for(var i = 0; i < cLength; i++){
+          $('#conditions').append('<li>' + conditions[i] + '</li>');
+        }
+    });
+});
+</script>
+</body>
+</html>
